@@ -7,12 +7,15 @@
 // Execute `rustlings hint modules2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
+// The delicious_snacks module is trying to present an external interface that is
+// different than its internal structure (the `fruits` and `veggies` modules and
+// associated constants). Complete the `use` statements to fit the uses in main and
+// find the one keyword missing for both constants.
 mod delicious_snacks {
     // TODO: Fix these use statements
-    use self::fruits::PEAR as ???
-    use self::veggies::CUCUMBER as ???
+    pub use self::fruits::PEAR as fruit;
+    pub use self::veggies::CUCUMBER as veggie;
 
     mod fruits {
         pub const PEAR: &'static str = "Pear";
