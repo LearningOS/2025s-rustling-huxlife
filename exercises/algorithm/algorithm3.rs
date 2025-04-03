@@ -3,11 +3,26 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+use std::array;
+
+fn sort<T: std::cmp::PartialOrd + Copy>(array: &mut [T]){
+
+    let  len = array.len();
+    for i in 0..len   {
+        for j in 0..len.saturating_sub(1) - i {
+            if array[j] > array[j+1] {
+                // array.swap(j, j+1);
+                let temp = array[j];         // ① 暂存前值（需要 Copy 特性）
+                array[j] = array[j+1];       // ② 后值赋前
+                array[j+1] = temp;      
+            }
+        }
+    }
 }
+
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
