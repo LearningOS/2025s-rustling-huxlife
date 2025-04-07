@@ -2,7 +2,6 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -37,7 +36,21 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        // 添加新元素到数组末尾
+        self.items.push(value);
+        self.count += 1;
+        
+        // 向上调整堆
+        let mut idx = self.count;
+        while idx > 1 {
+            let parent = self.parent_idx(idx);
+            if !(self.comparator)(&self.items[idx], &self.items[parent]) {
+                break;
+            }
+            // 交换当前节点和父节点
+            self.items.swap(idx, parent);
+            idx = parent;
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -57,8 +70,23 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
+        let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+    
+        if right <= self.count {
+            // 如果右子节点存在，比较左右子节点
+            if (self.comparator)(&self.items[left], &self.items[right]) {
+                left
+            } else {
+                right
+            }
+        } else if left <= self.count {
+            // 只有左子节点
+            left
+        } else {
+            // 没有子节点
+            idx
+        }
     }
 }
 
@@ -84,8 +112,33 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+    
+        // 保存堆顶元素
+        let result = std::mem::replace(&mut self.items[1], T::default());
+        
+        // 将最后一个元素移到堆顶
+        if self.count > 1 {
+            self.items[1] = self.items.pop().unwrap();
+        } else {
+            self.items.pop();
+        }
+        self.count -= 1;
+    
+        // 向下调整堆
+        let mut current = 1;
+        while self.children_present(current) {
+            let child = self.smallest_child_idx(current);
+            if !(self.comparator)(&self.items[child], &self.items[current]) {
+                break;
+            }
+            self.items.swap(current, child);
+            current = child;
+        }
+    
+        Some(result)
     }
 }
 
